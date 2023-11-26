@@ -6,12 +6,16 @@ from random import choice, randrange
 
 def get_word():
     letter = randrange(1, 30)
+    print(letter)
     url = 'https://onlinedic.net/ozhegov/letter' + str(letter) + '.php'
     page = get(url)
+    page.encoding = page.apparent_encoding
     soup = BeautifulSoup(page.text, "html.parser")
     words = soup.find(class_='words').find_all('li')
     word_tag = choice(words)
-    print(word_tag)
-    word = word_tag.li['title']
-    word_url = word_tag.li['href']
-    return (word, word_url)
+    word = str(word_tag.string)
+    for end in ('ть', 'ться', 'ый', '...'):
+        if word.endswith(end):
+            return get_word()
+    word_url = word_tag.a['href']
+    return word.lower(), word_url
