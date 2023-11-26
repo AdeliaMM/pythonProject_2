@@ -1,0 +1,17 @@
+from bs4 import BeautifulSoup
+from requests import get
+
+from random import choice, randrange
+
+
+def get_word():
+    letter = randrange(1, 30)
+    url = 'https://onlinedic.net/ozhegov/letter' + str(letter) + '.php'
+    page = get(url)
+    soup = BeautifulSoup(page.text, "html.parser")
+    words = soup.find(class_='words').find_all('li')
+    word_tag = choice(words)
+    print(word_tag)
+    word = word_tag.li['title']
+    word_url = word_tag.li['href']
+    return (word, word_url)
