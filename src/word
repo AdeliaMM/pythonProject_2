@@ -13,9 +13,17 @@ def get_word():
     soup = BeautifulSoup(page.text, "html.parser")
     words = soup.find(class_='words').find_all('li')
     word_tag = choice(words)
-    word = str(word_tag.string)
-    for end in ('ть', 'ться', 'ый', '...'):
-        if word.endswith(end):
-            return get_word()
+    word = str(word_tag.string).lower()
+    if word.endswith(('ть', 'ться', 'ый', 'ий', '...')):
+        return get_word()
     word_url = word_tag.a['href']
-    return word.lower(), word_url
+    return word, word_url
+
+def get_meaning(url_end):
+    url = 'https://onlinedic.net/ozhegov/' + url_end
+    page = get(url)
+    page.encoding = page.apparent_encoding
+    soup = BeautifulSoup(page.text, "html.parser")
+    meaning_tag = soup.find(class_='text')
+    meaning = ' '.join(meaning_tag.text.split())
+    return meaning
