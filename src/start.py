@@ -53,7 +53,7 @@ def get_text_messages(message):
                     markup = types.InlineKeyboardMarkup()
                     btn_m = types.InlineKeyboardButton('Да', callback_data='meaning')
                     markup.add(btn_m)
-                    btn_no = types.InlineKeyboardButton('Нет, ' + start_question.lower(), callback_data='yes')
+                    btn_no = types.InlineKeyboardButton('Нет, хочу ' + start_question.lower(), callback_data='yes')
                     markup.add(btn_no)
                     bot.send_message(message.from_user.id, right + 'слово ' + word.capitalize() + '\n' + meaning,
                                      reply_markup=markup)
